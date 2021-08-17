@@ -1060,7 +1060,7 @@ static inline void skb_reset_redirect(struct sk_buff *skb)
 }
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && !defined(ISRHEL7)
+#if 0
 #define skb_get_hash skb_get_rxhash
 #endif
 
