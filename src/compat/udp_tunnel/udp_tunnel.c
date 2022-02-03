@@ -141,6 +141,7 @@ static void __compat_iptunnel_xmit(struct rtable *rt, struct sk_buff *skb,
 		  __be32 src, __be32 dst, __u8 proto,
 		  __u8 tos, __u8 ttl, __be16 df, bool xnet)
 {
+	struct net *net = dev_net(rt->dst.dev);
 	struct iphdr *iph;
 	struct pcpu_tstats *tstats = this_cpu_ptr(skb->dev->tstats);
 
@@ -167,7 +168,7 @@ static void __compat_iptunnel_xmit(struct rtable *rt, struct sk_buff *skb,
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 53)
 	__ip_select_ident(iph, &rt->dst, (skb_shinfo(skb)->gso_segs ?: 1) - 1);
 #else
-	__ip_select_ident(dev_net(rt->dst.dev), iph, skb_shinfo(skb)->gso_segs ?: 1);
+	__ip_select_ident(net, iph, skb_shinfo(skb)->gso_segs ?: 1);
 #endif
 
 	iptunnel_xmit(skb, skb->dev);
